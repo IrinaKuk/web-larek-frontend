@@ -18,17 +18,19 @@ export interface IProductsList {
 // информация о товарах в корзине
 export type IBasket = Pick<IProduct, 'title' | 'price'>;
 
-//форма ввод
+//форма ввода данных об адресе и способе доставки
 export interface IOrder {
   payment: string;
   adress: string;
 }
 
+//Форма ввода контактных данных покупателя
 export interface IBuyerInfo {
   email: string;
   phone: string;
 }
 
+//Проверка валидации форм
 export interface IOrderData {
   CheckValidation(data: Record<keyof IOrder, string>): boolean;
 }
