@@ -7,13 +7,13 @@ interface IProductActions {
 }
 
 export class Product extends Component<IProduct> {
-    protected _index?: HTMLElement;
-    protected _id: HTMLElement;
-    protected _description?: HTMLElement;
+  protected _index?: HTMLElement;
+  protected _id: HTMLElement;
+  protected _description?: HTMLElement;
 	protected _image?: HTMLImageElement;
-    protected _title: HTMLElement;
+  protected _title: HTMLElement;
 	protected _category?: HTMLElement;
-    protected _price: HTMLElement;
+  protected _price: HTMLElement;
 	protected _button?: HTMLButtonElement;
 	protected _deletButton?: HTMLButtonElement;
 
