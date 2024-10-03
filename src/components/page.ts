@@ -1,48 +1,36 @@
-import { Component } from "./component";
-import { ensureElement } from "../utils/utils";
-import { IEvents } from "./base/events";
-interface IPage {
-  counter: number;
-  catalog: HTMLElement[];
-}
+import { IEvents } from './base/Events';
 
-export class Page extends Component<IPage> {
-  protected _counter: HTMLElement;
-protected _catalog: HTMLElement;
-  protected _basket: HTMLButtonElement;
-  protected _wrapper: HTMLElement;
+export class Page {
+	protected element: HTMLElement;
+	protected catalogElements: HTMLElement[] = [];
+	protected container: HTMLElement;
+	protected event: IEvents;
+	protected countBasketElement: HTMLElement;
+	protected buttonBasket: HTMLButtonElement;
 
-  constructor(container: HTMLElement, protected events: IEvents) {
-  super(container);
+	constructor(event: IEvents) {
+		this.event = event;
+		this.element = document.querySelector('.page');
+		this.container = this.element.querySelector('.gallery');
+		this.buttonBasket = this.element.querySelector('.header__basket');
+		this.countBasketElement = this.element.querySelector(
+			'.header__basket-counter'
+		);
 
-  this._catalog = ensureElement<HTMLElement>('.gallery');
-  this._wrapper = ensureElement<HTMLElement>('.page__wrapper');
+		this.buttonBasket.addEventListener('click', () => {
+			this.event.emit('basket:open');
+		});
+	}
 
-      this._counter = ensureElement<HTMLElement>(
-    `.header__basket-counter`
-  );
+	countBasket(count: number) {
+		this.countBasketElement.textContent = count.toString();
+	}
 
-      this._basket = ensureElement<HTMLButtonElement>(
-    `.header__basket`,
-    container
-  );
+	render(products: HTMLElement[]) {
+		this.container.innerHTML = '';
 
-      this._basket.addEventListener(`click`, () => {
-          this.events.emit(`basket:open`);
-      });
-
-  }
-
-  set catalog(items: HTMLElement[]) {
-  this._catalog.replaceChildren(...items);
-}
-
-set counter(value: number) {
-  this.setText(this._counter, String(value));
-}
-
-set locked(value: boolean) {
-  this.toggleClass(this._wrapper,'page__wrapper_locked', value);
-}
-
+		products.forEach((product) => {
+			this.container.appendChild(product);
+		});
+	}
 }

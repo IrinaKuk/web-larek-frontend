@@ -1,3 +1,5 @@
+import { IProduct } from "../types";
+
 export function pascalToKebab(value: string): string {
     return value.replace(/([a-z0–9])([A-Z])/g, "$1-$2").toLowerCase();
 }
@@ -132,4 +134,19 @@ export function createElement<
         }
     }
     return element;
+}
+
+
+
+
+export function convertArrToObj(arr: IProduct[]): Record<string, IProduct> {
+    const resultObj: Record<string, IProduct> = {}
+    
+    arr.forEach((item) => {
+        const itemId = item.id
+        resultObj[itemId] = item
+        delete resultObj[itemId].id
+    })
+    
+    return resultObj
 }

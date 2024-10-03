@@ -1,68 +1,41 @@
-import { IEvents } from "../components/base/events";
-// карточка товара
+// данные товара
 export interface IProduct {
-  id: string;
-  description: string;
-  image: string;
-  title: string;
-  category: string;
-  price: number
+	id: string;
+	description: string;
+	image: string;
+	title: string;
+	category: string;
+	price: number | null;
 }
 
+export type IProductBascet = Pick<IProduct, 'id' | 'title' | 'price'>;
 
-// массив карточек на главной странице
-export interface IProductsList {
-  products: IProduct[];
-  preview: string | null;
-}
-
-// информация о товарах в корзине
-export type IBasket = Pick<IProduct, 'title' | 'price'>;
-
-//форма ввода данных об адресе и способе доставки
+// данные заказа
 export interface IOrder {
-  payment: string;
-  address: string;
+	items?: string[]; //идентификаторы карточек
+	payment?: string;
+	address?: string;
+	email?: string;
+	phone?: string;
+	total?: number | null;
 }
 
-//Форма ввода контактных данных покупателя
-export interface IBuyerInfo {
-  email: string;
-  phone: string;
+//информация о товарах в корзине
+export interface IBasket {
+	items: string[];
+	total: number | null;
 }
 
-//общие данные для заказа
-export type IShoppingInfo = IOrder & IBuyerInfo;
+export type IFormError = Partial<Omit<IOrder, 'items' | 'total'>>;
+export type IOrderErrors = Partial<Pick<IOrder, 'address' | 'payment'>>;
+export type IContactsErrors = Partial<Pick<IOrder, 'email' | 'phone'>>;
 
-export type IShoppingPost = IShoppingInfo & {
-  total: number;
-  items: string[];
+//Результат покупки
+export interface IOrderResult {
+	id: string;
+	total: number;
 }
 
-//вывод текста ошибок
-export type IFormError = Partial<IShoppingInfo>;
-
-
-//Проверка валидации форм
-export interface IOrderData {
-  CheckValidation(data: Record<keyof IOrder, string>): boolean;
-}
-
-export interface IBuyerInfoData {
-  CheckValidation(data: Record<keyof IBuyerInfo, string>): boolean;
-}
-
-//форма успешной оплаты
-export interface ISuccessfulOrder {
-  id: string;
-  total: number;
-}
-
-//общие данные о магазине
-export interface IAppInfo {
-  catalog: IProduct[];
-  basket: IProduct[];
-  order: IShoppingInfo;
-  formError: IFormError;
-  events: IEvents;
+export interface IApiResponse {
+	items: IProduct[];
 }
