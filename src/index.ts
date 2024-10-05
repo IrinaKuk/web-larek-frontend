@@ -117,7 +117,6 @@ events.on('formContact:lavidation', (data: IOrder) => {
 });
 
 events.on('success:confirmation', () => {
-	success.setPrice(appData.getTotalBasket());
   modal.open();
   modal.content = success.render();
 	appData.orderData.items = appData.getBasket().items;
@@ -128,6 +127,7 @@ events.on('success:confirmation', () => {
 		.then((res: IApiResponse) => {
 			console.log('Заказ успешно отправлен:', res);
       events.emit('formSuccess:open');
+      success.setPrice(appData.getTotalBasket());
 		})
 		.catch((err) => {
 			console.error('Ошибка при отправке заказа:', err);
