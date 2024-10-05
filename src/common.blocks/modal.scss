@@ -7,17 +7,18 @@
   position: absolute;
   display: none;
   justify-content: center;
+  align-items: center;
   background-color: $overlayBackground;
   z-index: 100;
-  padding-top: 20vh;
-  padding-bottom: 45vh;
+  min-height: 100vh;
 
   &_active {
     display: flex;
-    position: fixed;
   }
 
   &__container {
+    height: max-content;
+
     @include mixins.container;
     @include mixins.flex(column);
     gap: $defaultPadding;

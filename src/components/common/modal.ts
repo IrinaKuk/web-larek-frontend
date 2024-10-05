@@ -31,7 +31,7 @@ export class Modal {
 			document.addEventListener('keydown', this.handleEscape);
 			this.events.emit('modal:open');
 			this.isModalOpen = true;
-			document.body.style.overflow = 'hidden';
+      document.querySelector('.page__wrapper').classList.add('page__wrapper_locked');
 		}
 	}
 
@@ -41,7 +41,7 @@ export class Modal {
 			document.removeEventListener('keydown', this.handleEscape);
 			this.isModalOpen = false;
 			this.events.emit('modal:close');
-			document.body.style.overflow = '';
+      document.querySelector('.page__wrapper').classList.remove('page__wrapper_locked');
 		}
 	}
 

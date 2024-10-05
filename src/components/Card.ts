@@ -109,13 +109,19 @@ export class Card {
 		}
 	}
 
-	set price(price: number) {
-		if (price !== null) {
-			this.cardPrice.textContent = `${price.toString()} синапсов`;
-		} else {
-			this.cardPrice.textContent = 'Бесценно';
-		}
-	}
+  set price(price: number) {
+    if (price !== null) {
+      this.cardPrice.textContent = `${price.toString()} синапсов`;
+      if (this.buttonBasket) {
+        this.buttonBasket.disabled = false;
+      }
+    } else {
+      this.cardPrice.textContent = 'Бесценно';
+      if (this.buttonBasket) {
+        this.buttonBasket.disabled = true;
+      }
+    }
+  }
 
 	index(value: number) {
 		this.cardIndex.textContent = String(value);
@@ -127,4 +133,5 @@ export class Card {
 	get id() {
 		return this.cardId;
 	}
+
 }

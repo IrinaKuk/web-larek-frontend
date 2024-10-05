@@ -77,7 +77,6 @@ events.on('basket:changed', (data: { Card: Card }) => {
 		prviewCard.index(appData.getBasket().items.indexOf(element) + 1);
 	});
 	basket.setPrice(appData.getTotalBasket());
-	modal.content = basket.render();
 });
 
 events.on('card:delete', (data: { Card: Card }) => {
@@ -87,13 +86,13 @@ events.on('card:delete', (data: { Card: Card }) => {
 });
 
 events.on('basket:open', () => {
-	events.emit('basket:changed');
+  modal.content = basket.render();
 	modal.open();
 });
 
 events.on('formOrder:open', () => {
-	modal.open();
 	modal.content = order.render();
+  modal.open();
 });
 
 events.on('formOrder:lavidation', (data: IOrder) => {
@@ -117,10 +116,10 @@ events.on('formContact:lavidation', (data: IOrder) => {
 	contact.contactErrors = appData.formError;
 });
 
-events.on('formSuccess:open', () => {
-	modal.open();
+events.on('success:confirmation', () => {
 	success.setPrice(appData.getTotalBasket());
-	modal.content = success.render();
+  modal.open();
+  modal.content = success.render();
 	appData.orderData.items = appData.getBasket().items;
 	appData.orderData.total = appData.getTotalBasket();
 	const orderData = appData.orderData;
@@ -128,22 +127,30 @@ events.on('formSuccess:open', () => {
 		.post('/order', orderData)
 		.then((res: IApiResponse) => {
 			console.log('Заказ успешно отправлен:', res);
+      events.emit('formSuccess:open');
 		})
 		.catch((err) => {
 			console.error('Ошибка при отправке заказа:', err);
 		});
 
+});
+
+
+    events.on('formSuccess:open', () => {
+      modal.open();
+      modal.content = success.render();
+      appData.clearErrors();
+      appData.cleanBasket();
+      appData.orderData = {
+        payment: '',
+        address: '',
+        email: '',
+        phone: '',
+        items: [],
+        total: 0
+      };
+      });
+
 	events.on('success:close', () => {
 		modal.close();
-		appData.clearErrors();
-		appData.cleanBasket();
-		appData.orderData = {
-			payment: '',
-			address: '',
-			email: '',
-			phone: '',
-			items: [],
-			total: 0,
-		};
 	});
-});

@@ -26,7 +26,7 @@ export class Contact {
 			event.preventDefault();
 		});
 		this.contactButton.addEventListener('click', () => {
-			this.event.emit('formSuccess:open');
+			this.event.emit('success:confirmation');
 		});
 
 		this.inputEmail.addEventListener('input', () => this.handleInput());
