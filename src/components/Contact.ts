@@ -22,7 +22,7 @@ export class Contact {
 		this.contactErrors = formError;
 		this.errorContainer = this.element.querySelector('.form__errors');
 
-		this.contactButton.addEventListener('submit', function (event) {
+		this.element.addEventListener('submit', function (event) {
 			event.preventDefault();
 		});
 		this.contactButton.addEventListener('click', () => {
@@ -80,4 +80,9 @@ export class Contact {
 	getFormData() {
 		return this.getData();
 	}
+
+  clear() {
+    this.inputEmail.value = '';
+    this.inputPhone.value = '';
+  }
 }

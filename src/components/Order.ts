@@ -25,7 +25,7 @@ export class Order {
 		this.orderErrors = formError;
 		this.errorContainer = this.element.querySelector('.form__errors');
 
-		this.orderButton.addEventListener('submit', function (event) {
+		this.element.addEventListener('submit', function (event) {
 			event.preventDefault();
 		});
 		this.orderButton.addEventListener('click', () => {
@@ -83,4 +83,8 @@ export class Order {
 	getFormData() {
 		return this.getData();
 	}
+
+  clear() {
+    this.inputAddress.value = '';
+  }
 }

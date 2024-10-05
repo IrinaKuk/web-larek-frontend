@@ -87,6 +87,7 @@ events.on('card:delete', (data: { Card: Card }) => {
 
 events.on('basket:open', () => {
   modal.content = basket.render();
+  basket.setPrice(appData.getTotalBasket());
 	modal.open();
 });
 
@@ -117,40 +118,39 @@ events.on('formContact:lavidation', (data: IOrder) => {
 });
 
 events.on('success:confirmation', () => {
-  modal.open();
-  modal.content = success.render();
-	appData.orderData.items = appData.getBasket().items;
-	appData.orderData.total = appData.getTotalBasket();
-	const orderData = appData.orderData;
-	api
-		.post('/order', orderData)
-		.then((res: IApiResponse) => {
-			console.log('Заказ успешно отправлен:', res);
-      events.emit('formSuccess:open');
-      success.setPrice(appData.getTotalBasket());
-		})
-		.catch((err) => {
-			console.error('Ошибка при отправке заказа:', err);
-		});
+  appData.orderData.items = appData.getBasket().items;
+  appData.orderData.total = appData.getTotalBasket();
+  const orderData = appData.orderData;
+  api
+    .post('/order', orderData)
+    .then((res: IApiResponse) => {
+      console.log('Заказ успешно отправлен:', res);
 
+      events.emit('formSuccess:open');
+    })
+    .catch((err) => {
+      console.error('Ошибка при отправке заказа:', err);
+    });
 });
 
+events.on('formSuccess:open', () => {
+  modal.open();
+  success.setPrice(appData.getTotalBasket());
+  modal.content = success.render();
+  appData.clearErrors();
+  appData.cleanBasket();
+  contact.clear();
+  order.clear();
+  appData.orderData = {
+    payment: '',
+    address: '',
+    email: '',
+    phone: '',
+    items: [],
+    total: 0
+  };
+});
 
-    events.on('formSuccess:open', () => {
-      modal.open();
-      modal.content = success.render();
-      appData.clearErrors();
-      appData.cleanBasket();
-      appData.orderData = {
-        payment: '',
-        address: '',
-        email: '',
-        phone: '',
-        items: [],
-        total: 0
-      };
-      });
-
-	events.on('success:close', () => {
-		modal.close();
-	});
+events.on('success:close', () => {
+  modal.close();
+});
